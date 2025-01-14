@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PaymentMethod {
+  id                     String                   @id @default(uuid())
+  name                   String
+  createdAt              DateTime                 @default(now())
+  deletedAt              DateTime?
+  updatedAt              DateTime                 @updatedAt
+  orders                 Orders[]
+  paymentMethodOnProduct PaymentMethodOnProduct[]
+}
+
+model PixKey {
+  id        String    @id @default(uuid())
+  key       String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  updatedAt DateTime  @updatedAt
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  cpf       String?   @unique
+  cnpj      String?   @unique
+  email     String    @unique
+  password  String
+  balance   Float     @default(0)
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+  orders    Orders[]
+  pixKeys   PixKey[]
+
+  Withdraw Withdraw[]
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  name         String
+  cpf          String?
+  email        String?
+  cellPhone    String?
+  cep          String?
+  city         String?
+  state        String?
+  address      String?
+  number       String?
+  neighborhood String?
+  extraInfo    String?
+  createdAt    DateTime  @default(now())
+  deletedAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+  orders       Orders[]
+}
+
+model Product {
+  id                       String                   @id @default(uuid())
+  name                     String
+  description              String
+  currentPrice             Float
+  oldPrice                 Float?
+  checkoutUrl              String
+  paymentMethodOnProductId PaymentMethodOnProduct[]
+  userId                   String
+  user                     User                     @relation(fields: [userId], references: [id])
+}
+
+model PaymentMethodOnProduct {
+  id              String        @id @default(uuid())
+  product         Product       @relation(fields: [productId], references: [id])
+  productId       String
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String
+}
+
+model Orders {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  customerId      String
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  paymentMethodId String
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  orderStatus     OrderStatus
+  createdAt       DateTime      @default(now())
+  deletedAt       DateTime?
+  updatedAt       DateTime      @updatedAt
+}
+
+model Withdraw {
+  id        String         @id @default(uuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id])
+  value     Float
+  status    WithdrawStatus
+  createdAt DateTime       @default(now())
+  deletedAt DateTime?
+  updatedAt DateTime       @updatedAt
+}
+
+enum WithdrawStatus {
+  REFUSED
+  APROVED
+  PENDING
+  PAID
+  ERROR
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  APROVED
+  PENDING
+  CHARGEBACK
+  REFUSEDDUETORISK
+  ERROR
+}
