@@ -1,22 +1,14 @@
 import { FastifyInstance } from 'fastify';
-import { UserCreate } from '../interfaces/user.interface';
-import { UserUseCase } from '../usecases/user.usecase';
+import { UserController } from '../controllers/user.controller';
+import { authMiddleware } from '../middlewares/auth.middleware';
+
 
 export async function userRoutes(fastify: FastifyInstance) {
-  const userUseCase = new UserUseCase();
-  fastify.post<{ Body: UserCreate }>('/', async (req, reply) => {
-    const { name, email } = req.body;
-    try {
-      const data = await userUseCase.create({
-        name,
-        email,
-      });
-      return reply.send(data);
-    } catch (error) {
-      reply.send(error);
-    }
-  });
-  fastify.get('/', (req, reply) => {
-    reply.send({ hello: 'world' });
-  });
+  fastify.addHook('onRequest', authMiddleware)
+  const userController = new UserController();
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    handler: userController.verify
+  })
 }

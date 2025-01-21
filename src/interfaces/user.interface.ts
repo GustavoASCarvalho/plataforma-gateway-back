@@ -1,6 +1,25 @@
 import { User } from "@prisma/client";
 
+export enum UserRepositoryRole {
+    USER = "USER",
+    ADMIN = "ADMIN"
+}
+
+export interface UserRepositoryCreate {
+    name: string;
+    email: string;
+    password: string;
+    cpf?: string;
+    cnpj?: string;
+    balance?: number;
+    role?: UserRepositoryRole;
+}
+
+export interface UserRepositoryFindByEmail {
+    email: string;
+}
+
 export interface UserRepository {
-    create({name, cpf, cnpj, email, password, balance, role}: User): Promise<User>;
-    findByEmail({email}: User): Promise<User | null>;
+    create(data: UserRepositoryCreate): Promise<User>;
+    findByEmail(data: UserRepositoryFindByEmail): Promise<User | null>;
 }

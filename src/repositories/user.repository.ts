@@ -1,27 +1,17 @@
 import { User } from '@prisma/client';
 import { prisma } from '../database/prisma-client';
-import { UserRepository } from '../interfaces/user.interface';
+import { UserRepository, UserRepositoryCreate, UserRepositoryFindByEmail } from '../interfaces/user.interface';
 
 class UserRepositoryPrisma implements UserRepository {
-  async create({name, cpf, cnpj, email, password, balance, role}: User): Promise<User> {
+  async create(data: UserRepositoryCreate): Promise<User> {
     const result = await prisma.user.create({
-      data: {
-        name,
-        cpf,
-        cnpj,
-        email,
-        password,
-        balance,
-        role,
-      },
+      data: data,
     });
     return result;
   }
-  async findByEmail({email}: User): Promise<User | null> {
+  async findByEmail(data: UserRepositoryFindByEmail): Promise<User | null> {
     const result = await prisma.user.findFirst({
-      where: {
-        email,
-      },
+      where: data,
     });
 
     return result || null;

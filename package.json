@@ -19,6 +19,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
+    "@types/bcrypt": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",
@@ -28,6 +29,10 @@
   },
   "dependencies": {
     "@prisma/client": "5.4.2",
-    "fastify": "^4.24.1"
+    "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.7",
+    "fastify": "^4.24.1",
+    "jose": "^5.9.6"
   }
 }

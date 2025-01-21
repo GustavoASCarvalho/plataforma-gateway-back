@@ -1,13 +1,15 @@
+import * as dotenv from 'dotenv';
 import Fastify from 'fastify';
-import { contactsRoutes } from './routes/contact.routes';
+import { errorMiddleware } from './middlewares/error.middleware';
 import { userRoutes } from './routes/user.routes';
 const app = Fastify();
 
+dotenv.config();
+
+app.setErrorHandler(errorMiddleware)
+
 app.register(userRoutes, {
   prefix: '/users',
-});
-app.register(contactsRoutes, {
-  prefix: '/contacts',
 });
 
 app.listen({ port: 3100 }, () => {
