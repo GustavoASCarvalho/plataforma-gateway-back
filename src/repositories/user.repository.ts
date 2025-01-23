@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { prisma } from '../database/prisma-client';
 import { UserRepository, UserRepositoryCreate, UserRepositoryFindByEmail } from '../interfaces/user.interface';
 
-class UserRepositoryPrisma implements UserRepository {
+export class UserRepositoryPrisma implements UserRepository {
   async create(data: UserRepositoryCreate): Promise<User> {
     const result = await prisma.user.create({
       data: data,
@@ -19,6 +19,4 @@ class UserRepositoryPrisma implements UserRepository {
     return result || null;
   }
 }
-
-export { UserRepositoryPrisma };
 

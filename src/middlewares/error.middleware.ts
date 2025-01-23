@@ -1,8 +1,8 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { ApiError } from '../types/api-error.types';
 import { ApiResponse } from '../types/api-response.types';
 
-export async function errorMiddleware(error: Error, request: FastifyRequest, reply: FastifyReply) {
+export async function errorMiddleware(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
     if (process.env.NODE_ENV === 'development') {
         console.log(`---- error message ----`);
         console.log(error.message);
@@ -16,8 +16,17 @@ export async function errorMiddleware(error: Error, request: FastifyRequest, rep
             statusCode: error.statusCode,
         } as ApiResponse);
     }
+
+    if (error.code === 'FST_ERR_VALIDATION') {
+        return reply.status(400).send({
+            message: error.message,
+            statusCode: 400,
+        } as ApiResponse);
+
+    }
+    console.log(error);
     return reply.status(500).send({
-        message: 'Erro interno do servidor',
+        message: 'Internal server error',
         statusCode: 500,
     } as ApiResponse);
 }

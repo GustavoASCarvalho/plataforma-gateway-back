@@ -1,6 +1,19 @@
-import { PaymentMethodOnProduct, Product } from "@prisma/client";
+import { Product } from "@prisma/client";
+
+export interface ProductRepositoryCreate {
+    name: string
+    description: string
+    currentPrice: number
+    oldPrice?: number
+    checkoutUrl: string
+    userId: string
+    paymentMethods: Array<{
+        id: string
+    }>
+}
+
 
 export interface ProductRepository {
-    create({name, description, currentPrice, oldPrice, checkoutUrl, userId}: Product, {paymentMethodId}: PaymentMethodOnProduct): Promise<Product>;
-    listAllByUserId({userId}: Product): Promise<Product[]>;
+    create(data: ProductRepositoryCreate): Promise<Product>;
+    listAllByUserId(userId: string): Promise<Product[]>;
 }

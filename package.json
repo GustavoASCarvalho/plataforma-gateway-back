@@ -13,6 +13,9 @@
     "check": "eslint . --ext .ts",
     "check:fix": "eslint . --ext .ts --fix"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,12 +23,13 @@
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
     "@types/bcrypt": "^5.0.2",
+    "@types/node": "^22.10.10",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",
     "prisma": "^5.4.2",
-    "tsx": "^3.13.0",
-    "typescript": "^5.2.2"
+    "tsx": "^3.14.0",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@prisma/client": "5.4.2",
