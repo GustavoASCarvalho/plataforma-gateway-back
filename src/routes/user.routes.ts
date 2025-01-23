@@ -8,7 +8,7 @@ export async function userRoutes(fastify: FastifyInstance) {
   const userController = new UserController();
   fastify.route({
     method: 'GET',
-    url: '/',
+    url: '/verify',
     handler: userController.verify
   })
 }

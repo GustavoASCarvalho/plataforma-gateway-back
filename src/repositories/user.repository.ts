@@ -11,7 +11,9 @@ class UserRepositoryPrisma implements UserRepository {
   }
   async findByEmail(data: UserRepositoryFindByEmail): Promise<User | null> {
     const result = await prisma.user.findFirst({
-      where: data,
+      where: {
+        email: data.email,
+      },
     });
 
     return result || null;

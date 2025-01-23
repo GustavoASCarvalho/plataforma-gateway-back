@@ -20,7 +20,7 @@ export async function authMiddleware(req: FastifyRequest, reply: FastifyReply) {
       !exp ||
       exp < dayjs().unix() ||
       iat > dayjs().unix() ||
-      typeof id !== "number"
+      typeof id !== "string"
     ) {
       throw new ApiError(`Não autorizado`, 401);
     }

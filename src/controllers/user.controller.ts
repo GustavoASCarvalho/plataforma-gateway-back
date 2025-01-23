@@ -1,23 +1,54 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { ApiResponse } from "../types/api-response.types";
 import { UserUseCase } from "../usecases/user.usecase";
 
-interface CreateUserRequest extends FastifyRequest {
-    body: {
-        name: string;
-        email: string;
-        password: string;
-        cpf?: string;
-        cnpj?: string;
-    };
+export interface CreateUserRequestBody {
+    name: string;
+    email: string;
+    password: string;
+    cpf?: string;
+    cnpj?: string;
+}
+
+export interface AuthenticateUserRequestBody {
+    name: string;
+    email: string;
+    password: string;
+    cpf?: string;
+    cnpj?: string;
 }
 
 export class UserController {
-    public async create(req: CreateUserRequest, res: FastifyReply): Promise<any> {
+    public async create(req: FastifyRequest, res: FastifyReply): Promise<any> {
         const userUseCase = new UserUseCase();
 
-        const { name, email, cpf, cnpj, password } = req.body;
+        const { name, email, cpf, cnpj, password } = req.body as CreateUserRequestBody;
         const token = await userUseCase.create({ name, email, cpf, cnpj, password });
 
-        return res.code(201).send({ token });
+        return res.code(201).send({
+            message: `User authenticated successfully`,
+            statusCode: 201,
+            data: token
+        } as ApiResponse);
+    }
+
+    public async authenticate(req: FastifyRequest, res: FastifyReply): Promise<any> {
+        const userUseCase = new UserUseCase();
+
+        const { email, password } = req.body as AuthenticateUserRequestBody;
+        const token = await userUseCase.authenticate({ email, password });
+
+        return res.code(201).send({
+            message: `User authenticated successfully`,
+            statusCode: 201,
+            data: token
+        } as ApiResponse);
+    }
+
+    public async verify(_: FastifyRequest, res: FastifyReply): Promise<any> {
+        return res.code(201).send({
+            message: `User authenticated successfully`,
+            statusCode: 200,
+        } as ApiResponse);
     }
 }
