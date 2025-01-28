@@ -15,5 +15,7 @@ export interface ProductRepositoryCreate {
 
 export interface ProductRepository {
     create(data: ProductRepositoryCreate): Promise<Product>;
-    listAllByUserId(userId: string): Promise<Product[]>;
+    listAllByUserId(userId: string, skip: number, take: number): Promise<Product[]>;
+    get(id: string): Promise<Product | null>;
+    delete(id: string): Promise<Product>;
 }

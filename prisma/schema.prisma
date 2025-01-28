@@ -78,6 +78,9 @@ model Product {
   paymentMethodOnProductId PaymentMethodOnProduct[]
   userId                   String
   user                     User                     @relation(fields: [userId], references: [id])
+  createdAt                DateTime                 @default(now())
+  deletedAt                DateTime?
+  updatedAt                DateTime                 @updatedAt
 }
 
 model PaymentMethodOnProduct {

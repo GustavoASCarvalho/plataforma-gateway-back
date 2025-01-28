@@ -26,13 +26,36 @@ export class ProductRepositoryPrisma implements ProductRepository {
 
         return product;
     }
-    async listAllByUserId(userId: string): Promise<Product[]> {
+    async listAllByUserId(userId: string, skip: number, take: number): Promise<Product[]> {
         const products = await prisma.product.findMany({
             where: {
-                userId
-            }
+                userId,
+            },
+            skip: skip,
+            take: take
         })
 
         return products;
+    }
+    async get(id: string): Promise<Product | null> {
+        const product = await prisma.product.findUnique({
+            where: {
+                id
+            }
+        })
+
+        return product;
+    }
+    async delete(id: string): Promise<Product> {
+        const product = await prisma.product.update({
+            where: {
+                id
+            },
+            data: {
+                deletedAt: new Date()
+            }
+        })
+
+        return product;
     }
 }

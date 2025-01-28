@@ -32,4 +32,16 @@ export class ProductUseCase {
 
         return product
     }
+
+    async get(id: string): Promise<Product | null> {
+        return this.productRepository.get(id);
+    }
+
+    async delete(id: string): Promise<Product> {
+        return this.productRepository.delete(id);
+    }
+
+    async listAllByUserId(userId: string, skip: number, take: number): Promise<Product[]> {
+        return this.productRepository.listAllByUserId(userId, skip, take);
+    }
 }
