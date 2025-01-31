@@ -30,6 +30,7 @@ export class ProductRepositoryPrisma implements ProductRepository {
         const products = await prisma.product.findMany({
             where: {
                 userId,
+                deletedAt: null
             },
             skip: skip,
             take: take
@@ -40,7 +41,8 @@ export class ProductRepositoryPrisma implements ProductRepository {
     async get(id: string): Promise<Product | null> {
         const product = await prisma.product.findUnique({
             where: {
-                id
+                id,
+                deletedAt: null
             }
         })
 

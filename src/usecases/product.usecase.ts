@@ -41,7 +41,8 @@ export class ProductUseCase {
         return this.productRepository.delete(id);
     }
 
-    async listAllByUserId(userId: string, skip: number, take: number): Promise<Product[]> {
+    async listAllByUserId(userId: string, page: number, take: number): Promise<Product[]> {
+        const skip = page * take;
         return this.productRepository.listAllByUserId(userId, skip, take);
     }
 }
