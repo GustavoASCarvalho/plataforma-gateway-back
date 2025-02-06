@@ -42,4 +42,15 @@ export class PixKeyController {
       data: pixKey
     })
   }
+
+  public async listByUserId(_: FastifyRequest, res: IFastifyReply): Promise<ApiResponse> {
+    const pixKeyUseCase = new PixKeyUseCase()
+    const pixKeys = await pixKeyUseCase.listByUserId(res.userId!)
+
+    return res.code(200).send({
+      message: 'Pix Keys listed successfully',
+      statusCode: 200,
+      data: pixKeys
+    })
+  }
 }

@@ -43,6 +43,18 @@ class PixKeyRepositoryPrisma implements PixKeyRepository {
 
     return result
   }
+
+  async listByUserId(userId: string): Promise<PixKey[]> {
+    const result = await prisma.pixKey.findMany({
+      where: {
+        paymentConfiguration: {
+          userId: userId
+        }
+      }
+    })
+
+    return result
+  }
 }
 
 export { PixKeyRepositoryPrisma }

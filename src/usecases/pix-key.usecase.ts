@@ -29,4 +29,10 @@ export class PixKeyUseCase {
 
     return pixKey
   }
+
+  async listByUserId(userId: string): Promise<PixKey[]> {
+    const pixKeys = await this.pixKeyRepository.listByUserId(userId)
+
+    return pixKeys
+  }
 }

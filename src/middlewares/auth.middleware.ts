@@ -20,7 +20,7 @@ export async function authMiddleware(req: FastifyRequest, reply: IFastifyReply) 
     }
 
     reply.userId = id
-  } catch (error) {
+  } catch {
     throw new ApiError(`Não autorizado`, 401)
   }
 }

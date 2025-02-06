@@ -1,35 +1,11 @@
 import { Customer } from '@prisma/client'
 import { prisma } from '../database/prisma-client'
-import { CustomerRepository } from '../interfaces/customer.interface'
+import { CustomerRepository, CustomerRepositoryCreate } from '../interfaces/customer.interface'
 
 class CustomerRepositoryPrisma implements CustomerRepository {
-  async create({
-    name,
-    cpf,
-    email,
-    cellPhone,
-    cep,
-    city,
-    state,
-    address,
-    number,
-    neighborhood,
-    extraInfo
-  }: Customer): Promise<Customer> {
+  async create(data: CustomerRepositoryCreate): Promise<Customer> {
     const result = await prisma.customer.create({
-      data: {
-        name,
-        cpf,
-        email,
-        cellPhone,
-        cep,
-        city,
-        state,
-        address,
-        number,
-        neighborhood,
-        extraInfo
-      }
+      data: data
     })
     return result
   }
@@ -40,6 +16,20 @@ class CustomerRepositoryPrisma implements CustomerRepository {
       },
       data: {
         ...data
+      }
+    })
+
+    return result
+  }
+
+  async listAllByUserId(userId: string): Promise<Customer[]> {
+    const result = await prisma.customer.findMany({
+      where: {
+        orders: {
+          some: {
+            userId
+          }
+        }
       }
     })
 

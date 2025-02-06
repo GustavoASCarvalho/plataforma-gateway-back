@@ -8,4 +8,5 @@ export interface PixKeyRepositoryCreate {
 export interface PixKeyRepository {
   create(data: PixKeyRepositoryCreate): Promise<PixKey>
   delete(id: string): Promise<PixKey>
+  listByUserId(userId: string): Promise<PixKey[]>
 }

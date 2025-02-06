@@ -1,5 +1,6 @@
 import { errorMiddleware } from './middlewares/error.middleware'
 import { authRoutes } from './routes/auth.routes'
+import { customerRoutes } from './routes/customer.routes'
 import { pixkeyRoutes } from './routes/pix-key.routes'
 import { productRoutes } from './routes/product.routes'
 import { userRoutes } from './routes/user.routes'
@@ -22,5 +23,9 @@ export async function routes(app: FastifyTypedInstance) {
 
   app.register(pixkeyRoutes, {
     prefix: '/pix-key'
+  })
+
+  app.register(customerRoutes, {
+    prefix: '/customer'
   })
 }

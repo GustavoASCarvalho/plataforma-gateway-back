@@ -16,7 +16,20 @@ export async function pixkeyRoutes(fastify: FastifyTypedInstance) {
       tags: ['Pix Key'],
       description: 'Create a new pix key',
       body: z.object({
-        key: z.string()
+        key: z
+          .string()
+          .refine((doc) => {
+            const replacedDoc = doc.replace(/\D/g, '')
+            return replacedDoc.length >= 11
+          }, 'must contain at least 11 characters.')
+          .refine((doc) => {
+            const replacedDoc = doc.replace(/\D/g, '')
+            return replacedDoc.length <= 14
+          }, 'must contain at most 14 characters.')
+          .refine((doc) => {
+            const replacedDoc = doc.replace(/\D/g, '')
+            return !!Number(replacedDoc)
+          }, 'must contain only numbers.')
       })
     }
   })
@@ -31,6 +44,16 @@ export async function pixkeyRoutes(fastify: FastifyTypedInstance) {
       params: z.object({
         id: z.string()
       })
+    }
+  })
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    handler: pixkeyController.listByUserId,
+    schema: {
+      tags: ['Pix Key'],
+      description: 'List all pix keys by user logged'
     }
   })
 }
