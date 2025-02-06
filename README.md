@@ -6,20 +6,18 @@ Esta é a documentação de requisitos para a API de Agenda de Contatos. Esta AP
 
 - Os usuários devem poder adicionar novos contatos com informações como nome, número de telefone, endereço de e-mail, etc.
 
-
 ## Requisitos Funcionais
 
-- [X] Cadastro de Contatos
-- [X] Visualização de Contatos
-- [X] Atualização de Contatos
+- [x] Cadastro de Contatos
+- [x] Visualização de Contatos
+- [x] Atualização de Contatos
 - [ ] Exclusão de Contatos
 
 ## Requisitos de Autenticação e Autorização
 
-- [X] Autenticação de Usuários
-- [X] Autorização de Acesso às Operações
-- [X] Criação de usuário
-
+- [x] Autenticação de Usuários
+- [x] Autorização de Acesso às Operações
+- [x] Criação de usuário
 
 ## Regras de Negócios
 

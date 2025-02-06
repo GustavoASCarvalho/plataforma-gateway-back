@@ -22,12 +22,20 @@ CREATE TABLE "PaymentMethod" (
 CREATE TABLE "PixKey" (
     "id" TEXT NOT NULL,
     "key" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "paymentConfigurationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "PixKey_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PaymentConfiguration" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "PaymentConfiguration_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -75,8 +83,11 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "currentPrice" DOUBLE PRECISION NOT NULL,
     "oldPrice" DOUBLE PRECISION,
-    "checkoutUrl" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -118,6 +129,15 @@ CREATE TABLE "Withdraw" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "PaymentMethod_name_key" ON "PaymentMethod"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PixKey_paymentConfigurationId_key" ON "PixKey"("paymentConfigurationId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PaymentConfiguration_userId_key" ON "PaymentConfiguration"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_cpf_key" ON "User"("cpf");
 
 -- CreateIndex
@@ -127,7 +147,10 @@ CREATE UNIQUE INDEX "User_cnpj_key" ON "User"("cnpj");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "PixKey" ADD CONSTRAINT "PixKey_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "PixKey" ADD CONSTRAINT "PixKey_paymentConfigurationId_fkey" FOREIGN KEY ("paymentConfigurationId") REFERENCES "PaymentConfiguration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PaymentConfiguration" ADD CONSTRAINT "PaymentConfiguration_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
