@@ -17,7 +17,7 @@ export async function customerRoutes(fastify: FastifyTypedInstance) {
       description: 'Create a new customer',
       body: z.object({
         name: z.string(),
-        cpf: z.string().optional(),
+        cpf: z.string(),
         email: z.string().optional(),
         cellPhone: z.string().optional(),
         cep: z.string().optional(),
