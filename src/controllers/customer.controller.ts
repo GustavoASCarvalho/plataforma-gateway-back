@@ -1,11 +1,11 @@
 import { FastifyRequest } from 'fastify'
 import { ApiResponse } from '../types/api-response.types'
 import { IFastifyReply } from '../types/fastify'
-import { CustomerUseCase } from '../usecases/customer.usercase'
+import { CustomerUseCase } from '../usecases/customer.usecase'
 
 export interface CreateCustomerBody {
   name: string
-  cpf: string | null
+  cpf: string
   email: string | null
   cellPhone: string | null
   cep: string | null

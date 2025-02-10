@@ -63,8 +63,8 @@ export async function productRoutes(fastify: FastifyTypedInstance) {
       tags: ['Product'],
       description: 'List all products by user id',
       querystring: z.object({
-        page: z.number().min(0).default(0).optional(),
-        take: z.number().min(1).default(10).optional()
+        page: z.coerce.number().min(0).default(0).optional(),
+        take: z.coerce.number().min(1).default(10).optional()
       })
     }
   })

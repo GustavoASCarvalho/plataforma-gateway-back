@@ -1,6 +1,6 @@
 import { PixKey } from '@prisma/client'
 import { PixKeyRepository } from '../interfaces/pix-key.interface'
-import { PixKeyRepositoryPrisma } from '../repositories/pixKey.repository'
+import { PixKeyRepositoryPrisma } from '../repositories/pix-key.repository'
 import { ApiError } from '../types/api-error.types'
 
 export interface PixKeyCreate {

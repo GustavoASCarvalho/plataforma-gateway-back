@@ -2,6 +2,7 @@ import { Customer } from '@prisma/client'
 
 export interface CustomerRepositoryCreate {
   name: string
+  externalId: string
   cpf: string | null
   email: string | null
   cellPhone: string | null
@@ -18,4 +19,5 @@ export interface CustomerRepository {
   create(data: CustomerRepositoryCreate): Promise<Customer>
   update(data: Customer): Promise<Customer>
   listAllByUserId(userId: string): Promise<Customer[]>
+  findByCpf(cpf: string): Promise<Customer | null>
 }

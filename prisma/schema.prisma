@@ -58,6 +58,7 @@ model User {
 model Customer {
   id           String    @id @default(uuid())
   name         String
+  externalId   String?
   cpf          String?
   email        String?
   cellPhone    String?

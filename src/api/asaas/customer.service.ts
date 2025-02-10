@@ -31,7 +31,7 @@ export class CustomerService {
     this.ACCESS_TOKEN = process.env.ASAAS_API_KEY
   }
 
-  async create(data: CustomerServiceCreate): Promise<boolean> {
+  async create(data: CustomerServiceCreate): Promise<string | null> {
     const response = await axios.request({
       url: `${this.BASE_URL}/customers`,
       method: 'POST',
@@ -41,7 +41,21 @@ export class CustomerService {
       data: data
     })
 
-    if (response.status === 200) return true
-    throw new Error('Error creating customer')
+    if (response.status === 200) return response.data.id
+    return null
+  }
+
+  async update(id: string, data: CustomerServiceCreate): Promise<string | null> {
+    const response = await axios.request({
+      url: `${this.BASE_URL}/customers/${id}`,
+      method: 'PUT',
+      headers: {
+        access_token: this.ACCESS_TOKEN
+      },
+      data: data
+    })
+
+    if (response.status === 200) return response.data.id
+    return null
   }
 }

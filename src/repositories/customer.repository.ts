@@ -35,6 +35,16 @@ class CustomerRepositoryPrisma implements CustomerRepository {
 
     return result
   }
+
+  findByCpf(cpf: string): Promise<Customer | null> {
+    const result = prisma.customer.findFirst({
+      where: {
+        cpf
+      }
+    })
+
+    return result
+  }
 }
 
 export { CustomerRepositoryPrisma }

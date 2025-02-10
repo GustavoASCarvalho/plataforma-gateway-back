@@ -26,23 +26,41 @@ export class CustomerUseCase {
   }
 
   async create(data: CustomerCreate): Promise<Customer> {
-    const customer = await this.customerRepository.create(data)
+    const customerFinded = await this.customerRepository.findByCpf(data.cpf)
+    let externalId = null
 
-    if (!customer) throw new Error('Error creating customer')
+    if (customerFinded) {
+      externalId = await this.customerService.update(customerFinded.externalId!, {
+        name: data.name,
+        cpfCnpj: data.cpf,
+        email: data.email,
+        phone: data.cellPhone,
+        postalCode: data.cep,
+        address: data.address,
+        addressNumber: data.number,
+        complement: data.extraInfo,
+        province: data.state
+      })
+    } else {
+      externalId = await this.customerService.create({
+        name: data.name,
+        cpfCnpj: data.cpf,
+        email: data.email,
+        phone: data.cellPhone,
+        postalCode: data.cep,
+        address: data.address,
+        addressNumber: data.number,
+        complement: data.extraInfo,
+        province: data.state
+      })
+    }
 
-    const created = await this.customerService.create({
-      name: data.name,
-      cpfCnpj: data.cpf,
-      email: data.email,
-      phone: data.cellPhone,
-      postalCode: data.cep,
-      address: data.address,
-      addressNumber: data.number,
-      complement: data.extraInfo,
-      province: data.state
+    if (!externalId) throw new Error('Error creating customer')
+
+    const customer = await this.customerRepository.create({
+      ...data,
+      externalId
     })
-
-    if (!created) throw new Error('Error creating customer')
 
     return customer
   }
