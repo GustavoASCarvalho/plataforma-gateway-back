@@ -16,4 +16,12 @@ export async function userRoutes(fastify: FastifyTypedInstance) {
       description: 'Verify if the user is authenticated'
     }
   })
+
+  fastify.route({
+    method: 'GET',
+    url: '/teste',
+    handler: (_, reply) => {
+      reply.send('Teste')
+    }
+  })
 }
