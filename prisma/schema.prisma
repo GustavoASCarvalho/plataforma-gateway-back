@@ -55,6 +55,32 @@ model User {
   paymentConfiguration PaymentConfiguration?
 }
 
+model DepartmentClassification {
+  id            String      @id @default(uuid())
+  name          String
+  createdAt     DateTime    @default(now())
+  deletedAt     DateTime?
+  updatedAt     DateTime    @updatedAt
+  departments   Department[]
+}
+
+model Department {
+  id        String    @id @default(uuid())
+  name      String
+  departmentClassficationId String
+  departmentClassfication DepartmentClassification @relation(fields: [departmentClassficationId], references: [id])
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  updatedAt DateTime  @updatedAt
+}
+
+
+model Business {
+  id String @id @default(uuid())
+  comercialSite String
+  description String
+}
+
 model Customer {
   id           String    @id @default(uuid())
   name         String
