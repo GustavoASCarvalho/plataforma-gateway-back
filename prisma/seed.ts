@@ -21,6 +21,7 @@ async function main() {
       code: 1
     }
   })
+  //novo comentario no código
   await prisma.paymentMethod.upsert({
     where: { name: 'CARTAO_DE_CREDITO' },
     update: {},
