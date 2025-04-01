@@ -4,7 +4,7 @@ name: Continuous Delivery
 on:
   push:
     branches:
-      - main # comentario
+      - main
 
 permissions: {}
 

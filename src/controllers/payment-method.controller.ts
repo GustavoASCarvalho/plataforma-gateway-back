@@ -10,7 +10,7 @@ export class PaymentMethodController {
 
     return res.code(200).send({
       message: `Payment Methods listed successfully`,
-      statusCode: 201,
+      statusCode: 200,
       data: paymentMethod
     })
   }

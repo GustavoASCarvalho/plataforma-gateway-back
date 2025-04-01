@@ -13,6 +13,7 @@ datasource db {
 model PaymentMethod {
   id                     String                   @id @default(uuid())
   name                   String                   @unique
+  code                   Int                      @unique
   createdAt              DateTime                 @default(now())
   deletedAt              DateTime?
   updatedAt              DateTime                 @updatedAt
@@ -31,63 +32,112 @@ model PixKey {
 }
 
 model PaymentConfiguration {
-  id     String  @id @default(uuid())
-  userId String  @unique
-  user   User    @relation(fields: [userId], references: [id])
-  PixKey PixKey?
+  id         String   @id @default(uuid())
+  businessId String   @unique
+  business   Business @relation(fields: [businessId], references: [id])
+  PixKey     PixKey?
 }
 
 model User {
-  id                   String                @id @default(uuid())
-  name                 String
-  cpf                  String?               @unique
-  cnpj                 String?               @unique
-  email                String                @unique
-  password             String
-  balance              Float                 @default(0)
-  role                 Role                  @default(USER)
-  createdAt            DateTime              @default(now())
-  deletedAt            DateTime?
-  updatedAt            DateTime              @updatedAt
-  products             Product[]
-  orders               Orders[]
-  withdraw             Withdraw[]
-  paymentConfiguration PaymentConfiguration?
+  id         String     @id @default(uuid())
+  name       String
+  cpf        String?    @unique
+  cnpj       String?    @unique
+  email      String     @unique
+  password   String
+  address    Address?
+  role       Role       @default(USER)
+  business   Business[]
+  isVerified Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  deletedAt  DateTime?
+  updatedAt  DateTime   @updatedAt
+}
+
+model Business {
+  id                     String                  @id @default(uuid())
+  comercialSite          String
+  description            String
+  extractDescription     String
+  balance                Float                   @default(0)
+  departmentId           String
+  department             Department              @relation(fields: [departmentId], references: [id])
+  paymentConfiguration   PaymentConfiguration?
+  apiKey                 ApiKey?
+  products               Product[]
+  orders                 Orders[]
+  customerSupportNumbers CustomerSuportNumbers[]
+  userId                 String
+  user                   User                    @relation(fields: [userId], references: [id])
+  createdAt              DateTime                @default(now())
+  deletedAt              DateTime?
+  updatedAt              DateTime                @updatedAt
+}
+
+model CustomerSuportNumbers {
+  id         String    @id @default(uuid())
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id])
+  phone      String
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  updatedAt  DateTime  @updatedAt
+}
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  key        String    @unique
+  businessId String    @unique
+  business   Business  @relation(fields: [businessId], references: [id])
+  isActive   Boolean   @default(true)
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  updatedAt  DateTime  @updatedAt
 }
 
 model DepartmentClassification {
-  id            String      @id @default(uuid())
-  name          String
-  createdAt     DateTime    @default(now())
-  deletedAt     DateTime?
-  updatedAt     DateTime    @updatedAt
-  departments   Department[]
+  id          String       @id @default(uuid())
+  name        String       @unique
+  code        Int          @unique
+  createdAt   DateTime     @default(now())
+  deletedAt   DateTime?
+  updatedAt   DateTime     @updatedAt
+  departments Department[]
 }
 
 model Department {
-  id        String    @id @default(uuid())
-  name      String
+  id                        String                   @id @default(uuid())
+  name                      String                   @unique
+  code                      Int                      @unique
   departmentClassficationId String
-  departmentClassfication DepartmentClassification @relation(fields: [departmentClassficationId], references: [id])
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
-  updatedAt DateTime  @updatedAt
-}
-
-
-model Business {
-  id String @id @default(uuid())
-  comercialSite String
-  description String
+  departmentClassfication   DepartmentClassification @relation(fields: [departmentClassficationId], references: [id])
+  business                  Business[]
+  createdAt                 DateTime                 @default(now())
+  deletedAt                 DateTime?
+  updatedAt                 DateTime                 @updatedAt
 }
 
 model Customer {
+  id         String    @id @default(uuid())
+  name       String
+  externalId String?
+  cpf        String?
+  email      String?
+  cellPhone  String?
+  address    Address?
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  updatedAt  DateTime  @updatedAt
+  orders     Orders[]
+}
+
+model Address {
   id           String    @id @default(uuid())
-  name         String
-  externalId   String?
-  cpf          String?
-  email        String?
-  cellPhone    String?
+  customerId   String?   @unique
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  userId       String?   @unique
+  user         User?     @relation(fields: [userId], references: [id])
   cep          String?
   city         String?
   state        String?
@@ -98,7 +148,6 @@ model Customer {
   createdAt    DateTime  @default(now())
   deletedAt    DateTime?
   updatedAt    DateTime  @updatedAt
-  orders       Orders[]
 }
 
 model Product {
@@ -109,8 +158,8 @@ model Product {
   oldPrice                 Float?
   slug                     String
   paymentMethodOnProductId PaymentMethodOnProduct[]
-  userId                   String
-  user                     User                     @relation(fields: [userId], references: [id])
+  businessId               String
+  business                 Business                 @relation(fields: [businessId], references: [id])
   createdAt                DateTime                 @default(now())
   deletedAt                DateTime?
   updatedAt                DateTime                 @updatedAt
@@ -126,8 +175,8 @@ model PaymentMethodOnProduct {
 
 model Orders {
   id              String        @id @default(uuid())
-  userId          String
-  user            User          @relation(fields: [userId], references: [id])
+  businessId      String
+  business        Business      @relation(fields: [businessId], references: [id])
   customerId      String
   customer        Customer      @relation(fields: [customerId], references: [id])
   paymentMethodId String
@@ -138,24 +187,24 @@ model Orders {
   updatedAt       DateTime      @updatedAt
 }
 
-model Withdraw {
-  id        String         @id @default(uuid())
-  userId    String
-  user      User           @relation(fields: [userId], references: [id])
-  value     Float
-  status    WithdrawStatus
-  createdAt DateTime       @default(now())
-  deletedAt DateTime?
-  updatedAt DateTime       @updatedAt
-}
+// model Withdraw {
+//   id        String         @id @default(uuid())
+//   userId    String
+//   user      User           @relation(fields: [userId], references: [id])
+//   value     Float
+//   status    WithdrawStatus
+//   createdAt DateTime       @default(now())
+//   deletedAt DateTime?
+//   updatedAt DateTime       @updatedAt
+// }
 
-enum WithdrawStatus {
-  REFUSED
-  APROVED
-  PENDING
-  PAID
-  ERROR
-}
+// enum WithdrawStatus {
+//   REFUSED
+//   APROVED
+//   PENDING
+//   PAID
+//   ERROR
+// }
 
 enum Role {
   USER

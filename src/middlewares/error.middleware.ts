@@ -3,7 +3,7 @@ import { ApiError } from '../types/api-error.types'
 import { ApiResponse } from '../types/api-response.types'
 
 export async function errorMiddleware(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'DSV') {
     console.log(`---- error message ----`)
     console.log(error.message)
     console.log(`----  error stack  ----`)
