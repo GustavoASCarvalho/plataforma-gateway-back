@@ -7,6 +7,8 @@ import { CustomerCreate, CustomerUseCase } from '../../src/usecases/customer.use
 vi.mock('../src/repositories/customer.repository')
 vi.mock('../src/api/asaas/customer.service')
 
+// testes
+
 describe('CustomerUseCase', () => {
   let useCase: CustomerUseCase
   let mockRepository: CustomerRepository
