@@ -27,7 +27,7 @@ export class CustomerService {
     if (!process.env.ASAAS_API_BASE_URL) throw new Error('ASAAS_API_BASE_URL is required')
     this.BASE_URL = process.env.ASAAS_API_BASE_URL
 
-    if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is required')
+    if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is requiredd')
     this.ACCESS_TOKEN = process.env.ASAAS_API_KEY
   }
 
