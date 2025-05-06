@@ -21,6 +21,7 @@ jobs:
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file was changed"
           done
+
   discord:
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +46,7 @@ jobs:
           severity: warn
           details: Test Cancelled!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -59,12 +61,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Set environment variables
+      - name: Install dependencies
         env:
           ASAAS_API_BASE_URL: ${{ secrets.ASAAS_API_BASE_URL }}
           ASAAS_API_KEY: ${{ secrets.ASAAS_API_KEY }}
-
-      - name: Install dependencies
         run: |
           npm install
 
