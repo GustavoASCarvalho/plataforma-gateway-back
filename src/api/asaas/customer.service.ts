@@ -23,11 +23,10 @@ export class CustomerService {
   private BASE_URL = ''
   private ACCESS_TOKEN = ''
   constructor() {
-    console.log('BASE_URL', process.env)
     if (!process.env.ASAAS_API_BASE_URL) throw new Error('ASAAS_API_BASE_URL is required')
     this.BASE_URL = process.env.ASAAS_API_BASE_URL
 
-    if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is requiredd')
+    if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is required')
     this.ACCESS_TOKEN = process.env.ASAAS_API_KEY
   }
 

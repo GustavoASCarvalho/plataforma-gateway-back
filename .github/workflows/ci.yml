@@ -45,3 +45,24 @@ jobs:
           severity: warn
           details: Test Cancelled!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: 20.18
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests with Vitest
+        run: |
+          npm run test
