@@ -23,11 +23,11 @@ export class CustomerService {
   private BASE_URL = ''
   private ACCESS_TOKEN = ''
   constructor() {
-    if (!process.env.ASAAS_API_BASE_URL) throw new Error('ASAAS_API_BASE_URL is required')
-    this.BASE_URL = process.env.ASAAS_API_BASE_URL
+    // if (!process.env.ASAAS_API_BASE_URL) throw new Error('ASAAS_API_BASE_URL is required')
+    this.BASE_URL = process.env.ASAAS_API_BASE_URL || ''
 
-    if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is required')
-    this.ACCESS_TOKEN = process.env.ASAAS_API_KEY
+    // if (!process.env.ASAAS_API_KEY) throw new Error('ASAAS_API_KEY is required')
+    this.ACCESS_TOKEN = process.env.ASAAS_API_KEY || ''
   }
 
   async create(data: CustomerServiceCreate): Promise<string | null> {
