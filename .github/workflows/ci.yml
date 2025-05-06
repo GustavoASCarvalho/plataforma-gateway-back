@@ -61,8 +61,8 @@ jobs:
 
       - name: Set environment variables
         env:
-        ASAAS_API_BASE_URL: ${{ secrets.ASAAS_API_BASE_URL }}
-        ASAAS_API_KEY: ${{ secrets.ASAAS_API_KEY }}
+          ASAAS_API_BASE_URL: ${{ secrets.ASAAS_API_BASE_URL }}
+          ASAAS_API_KEY: ${{ secrets.ASAAS_API_KEY }}
 
       - name: Install dependencies
         run: |
